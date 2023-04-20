@@ -1,10 +1,14 @@
 import React from 'react';
 import Header from '../components/Header';
+import searchAlbum from '../services/searchAlbumsAPI';
+import Carregando from '../components/Carregando';
 
 class Search extends React.Component {
   constructor() {
     super();
     this.state = {
+      album: '',
+      artist: '',
       disable: true,
     };
   }
@@ -13,9 +17,26 @@ class Search extends React.Component {
     const { value } = target;
     if (value.length >= 2) {
       this.setState(
-        { disable: false },
+        {
+          disable: false,
+          artist: value,
+
+        },
       );
     }
+  };
+
+  onFindArtist = async () => {
+    const {
+      artist,
+    } = this.state;
+    const listaAlbums = await searchAlbum(artist);
+    this.setState(
+      {
+        album: listaAlbums },
+    );
+    console.log(listaAlbums.length);
+    console.log(searchAlbum(artist));
   };
 
   render() {
@@ -32,6 +53,7 @@ class Search extends React.Component {
             onChange={ this.validateInput }
           />
           <button
+            onClick={ this.onFindArtist }
             data-testid="search-artist-button"
             disabled={ disable }
           >
