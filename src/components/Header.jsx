@@ -8,29 +8,33 @@ class Header extends React.Component {
   constructor() {
     super();
     this.state = {
+      loading: false,
       name: '',
     };
   }
 
+  componentDidMount() {
+    const resolve = Promise.resolve(getUser());
+    console.log(resolve);
+    const data = resolve.then((v) => {
+      this.setState(
+        { name: v.name,
+          loading: true },
+      );
+    });
+    return data;
+  }
+
   render() {
-    const getname = async () => {
-      const resolve = Promise.resolve(getUser());
-      const data = resolve.then((v) => {
-        this.setState(
-          { name: v.name },
-        );
-      });
-      return data;
-    };
     const {
       name,
+      loading,
     } = this.state;
     return (
       <div>
         {
-          !getname()
-            ? <Carregando />
-            : (
+          loading
+            ? (
               <header data-testid="header-component">
                 <ul>
                   <li>
@@ -69,6 +73,7 @@ class Header extends React.Component {
                 <p data-testid="header-user-name">{name}</p>
 
               </header>)
+            : <Carregando />
         }
       </div>
     );
