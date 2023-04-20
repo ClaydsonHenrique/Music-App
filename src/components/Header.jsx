@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/Header.css';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { getUser } from '../services/userAPI';
 import Carregando from './Carregando';
