@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../components/Header';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
@@ -7,6 +8,7 @@ class Search extends React.Component {
   constructor() {
     super();
     this.state = {
+      resposta: '',
       valueChange: '',
       albums: [],
       disable: true,
@@ -33,6 +35,7 @@ class Search extends React.Component {
     const { valueChange } = this.state;
     const album = await searchAlbumsAPI(valueChange);
     this.setState({
+      resposta: `Resultado de álbuns de: ${valueChange}`,
       albums: album,
       valueChange: '',
       loading: true,
@@ -41,6 +44,7 @@ class Search extends React.Component {
 
   render() {
     const {
+      resposta,
       albums,
       loading,
       valueChange,
@@ -69,12 +73,34 @@ class Search extends React.Component {
                 </button>
               </div>
               <div>
-                {albums.map(({ artistId, artistName, artworkUrl100 }, index) => (
+                <p>
+                  {resposta}
+                </p>
+                {albums.map((
+                  { artistId,
+                    artistName,
+                    artworkUrl100,
+                    collectionName,
+                    collectionId },
+                  index,
+                ) => (
                   <ul key={ index }>
+                    <li>
+                      {' '}
+                      <Link
+                        className="link"
+                        data-testid={ `link-to-album-${collectionId}` }
+                        to={ `/album/${collectionId}` }
+                      >
+                        {collectionName}
+                      </Link>
+
+                    </li>
                     <li>{artistId}</li>
                     <li>{artistName}</li>
                     <li><img src={ artworkUrl100 } alt="" /></li>
                   </ul>
+
                 ))}
               </div>
             </>
