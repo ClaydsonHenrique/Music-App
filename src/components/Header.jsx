@@ -14,7 +14,6 @@ class Header extends React.Component {
 
   componentDidMount() {
     const resolve = Promise.resolve(getUser());
-    console.log(resolve);
     const data = resolve.then((v) => {
       this.setState(
         { name: v.name,

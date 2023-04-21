@@ -1,65 +1,86 @@
 import React from 'react';
 import Header from '../components/Header';
-import searchAlbum from '../services/searchAlbumsAPI';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
 
 class Search extends React.Component {
   constructor() {
     super();
     this.state = {
-      album: '',
-      artist: '',
+      valueChange: '',
+      albums: [],
       disable: true,
+      loading: true,
     };
   }
 
   validateInput = ({ target }) => {
     const { value } = target;
+    this.setState({
+      valueChange: value,
+    });
     if (value.length >= 2) {
       this.setState(
         {
           disable: false,
-          artist: value,
-
         },
       );
     }
   };
 
-  onFindArtist = async () => {
-    const {
-      artist,
-    } = this.state;
-    const listaAlbums = await searchAlbum(artist);
-    this.setState(
-      {
-        album: listaAlbums },
-    );
-    console.log(listaAlbums.length);
-    console.log(searchAlbum(artist));
+  findArtist = async () => {
+    this.setState({ loading: false });
+    const { valueChange } = this.state;
+    const album = await searchAlbumsAPI(valueChange);
+    this.setState({
+      albums: album,
+      valueChange: '',
+      loading: true,
+    });
   };
 
   render() {
     const {
+      albums,
+      loading,
+      valueChange,
       disable,
     } = this.state;
     return (
       <>
         <Header />
-        <div data-testid="page-search">
-          <input
-            type="text"
-            data-testid="search-artist-input"
-            onChange={ this.validateInput }
-          />
-          <button
-            onClick={ this.onFindArtist }
-            data-testid="search-artist-button"
-            disabled={ disable }
-          >
-            Pesquisar
-          </button>
-        </div>
+        {
+          loading ? (
+            <>
+              <div data-testid="page-search">
+                <input
+                  value={ valueChange }
+                  name="find"
+                  type="text"
+                  data-testid="search-artist-input"
+                  onChange={ this.validateInput }
+                />
+                <button
+                  onClick={ this.findArtist }
+                  data-testid="search-artist-button"
+                  disabled={ disable }
+                >
+                  Pesquisar
+                </button>
+              </div>
+              <div>
+                {albums.map(({ artistId, artistName, artworkUrl100 }, index) => (
+                  <ul key={ index }>
+                    <li>{artistId}</li>
+                    <li>{artistName}</li>
+                    <li><img src={ artworkUrl100 } alt="" /></li>
+                  </ul>
+                ))}
+              </div>
+            </>
+          )
+            : <Carregando />
+        }
       </>
     );
   }
