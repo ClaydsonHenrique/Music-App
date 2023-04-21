@@ -8,6 +8,7 @@ class Search extends React.Component {
   constructor() {
     super();
     this.state = {
+      invalid: '',
       resposta: '',
       valueChange: '',
       albums: [],
@@ -34,6 +35,10 @@ class Search extends React.Component {
     this.setState({ loading: false });
     const { valueChange } = this.state;
     const album = await searchAlbumsAPI(valueChange);
+    console.log(album.length);
+    if (album.length === 0) {
+      this.setState({ invalid: 'Nenhum álbum foi encontrado' });
+    }
     this.setState({
       resposta: `Resultado de álbuns de: ${valueChange}`,
       albums: album,
@@ -44,6 +49,7 @@ class Search extends React.Component {
 
   render() {
     const {
+      invalid,
       resposta,
       albums,
       loading,
@@ -73,9 +79,9 @@ class Search extends React.Component {
                 </button>
               </div>
               <div>
-                <p>
-                  {resposta}
-                </p>
+                {albums.length === 0
+                  ? <p>{invalid}</p>
+                  : <p>{resposta}</p> }
                 {albums.map((
                   { artistId,
                     artistName,
