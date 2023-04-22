@@ -16,7 +16,8 @@ class Album extends React.Component {
   }
 
   async getAlbum() {
-    const musicas = await musicsApi(79789358);
+    const number = 79789358;
+    const musicas = await musicsApi(number);
     this.setState({ album: musicas });
   }
 
