@@ -90,8 +90,8 @@ class Search extends React.Component {
                     collectionId },
                   index,
                 ) => (
-                  <ul key={ index }>
-                    <li>
+                  <div key={ index } className="container-albums">
+                    <p>
                       {' '}
                       <Link
                         className="link"
@@ -101,12 +101,11 @@ class Search extends React.Component {
                         {collectionName}
                       </Link>
 
-                    </li>
-                    <li>{artistId}</li>
-                    <li>{artistName}</li>
-                    <li><img src={ artworkUrl100 } alt="" /></li>
-                  </ul>
-
+                    </p>
+                    <p>{artistId}</p>
+                    <p>{artistName}</p>
+                    <img src={ artworkUrl100 } alt="" />
+                  </div>
                 ))}
               </div>
             </>
