@@ -1,10 +1,13 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
+      loading: false,
+      redirect: false,
       nome: '',
       disable: true,
     };
@@ -15,8 +18,11 @@ class Login extends React.Component {
     const {
       nome,
     } = this.state;
-    const data = await createUser({ name: nome });
-    console.log(data);
+    await createUser({ name: nome });
+    this.setState({
+      redirect: true,
+      loading: true,
+    });
   };
 
   validateInput = ({ target }) => {
@@ -36,10 +42,17 @@ class Login extends React.Component {
 
   render() {
     const {
+      loading,
+      redirect,
       nome,
       disable,
     } = this.state;
-
+    if (loading) {
+      return <Redirect to="/Carregando" />;
+    }
+    if (redirect) {
+      return <Redirect to="/search" />;
+    }
     // createUser.nome = this.validateInput;
     return (
       <div data-testid="page-login">
