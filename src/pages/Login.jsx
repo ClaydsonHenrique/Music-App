@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
+import Carregando from '../components/Carregando';
 
 class Login extends React.Component {
   constructor() {
@@ -18,11 +19,12 @@ class Login extends React.Component {
     const {
       nome,
     } = this.state;
+    this.setState({ loading: true });
     await createUser({ name: nome });
+    console.log('loading flahou');
     this.setState({
       redirect: true,
-      loading: true,
-    });
+      loading: false });
   };
 
   validateInput = ({ target }) => {
@@ -47,34 +49,31 @@ class Login extends React.Component {
       nome,
       disable,
     } = this.state;
-    if (loading) {
-      return <Redirect to="/Carregando" />;
-    }
+
     if (redirect) {
       return <Redirect to="/search" />;
     }
-    // createUser.nome = this.validateInput;
     return (
       <div data-testid="page-login">
-        <form>
-          <input
-            onChange={ this.validateInput }
-            value={ nome }
-            type="text"
-            data-testid="login-name-input"
-            placeholder="nome"
-          />
-          <button
-            onClick={ this.createName }
-            type="submit"
-            data-testid="login-submit-button"
-            disabled={ disable }
-          >
-            Entrar
-
-          </button>
-        </form>
-
+        { !loading
+          ? (
+            <form onSubmit={ this.createName }>
+              <input
+                onChange={ this.validateInput }
+                value={ nome }
+                type="text"
+                data-testid="login-name-input"
+                placeholder="nome"
+              />
+              <button
+                type="submit"
+                data-testid="login-submit-button"
+                disabled={ disable }
+              >
+                Entrar
+              </button>
+            </form>)
+          : <Carregando /> }
       </div>
     );
   }

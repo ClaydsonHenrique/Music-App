@@ -13,35 +13,39 @@ class Album extends React.Component {
       album: [],
       artistNames: '',
       albumName: '',
+      image: '',
     };
   }
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
+    console.log(id);
     this.getAlbum(id);
   }
 
   async getAlbum(id) {
     const musicas = await musicsApi(id);
+    console.log('lfsdf', musicas);
     this.setState({ album: musicas });
     const { album } = this.state;
+    console.log('novo', album);
     this.addNameAndAlbum(album[1]);
   }
 
   addNameAndAlbum(param) {
     if (param) {
-      const { artistName, collectionCensoredName } = param;
+      const { artistName, collectionCensoredName, artworkUrl30 } = param;
       this.setState({
         artistNames: artistName,
         albumName: collectionCensoredName,
+        image: artworkUrl30,
       });
     }
   }
 
   render() {
-    const { album, artistNames, albumName } = this.state;
+    const { album, artistNames, albumName, image } = this.state;
     const newAlbum = album.shift();
-    console.log(album);
     return (
       <>
         <Header />
@@ -51,6 +55,7 @@ class Album extends React.Component {
             albumName={ albumName }
             newAlbums={ newAlbum }
             album={ album }
+            image={ image }
           />
         </div>
       </>
