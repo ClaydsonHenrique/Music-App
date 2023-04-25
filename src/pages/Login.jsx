@@ -21,7 +21,6 @@ class Login extends React.Component {
     } = this.state;
     this.setState({ loading: true });
     await createUser({ name: nome });
-    console.log('loading flahou');
     this.setState({
       redirect: true,
       loading: false });

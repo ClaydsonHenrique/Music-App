@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+// import { addSong } from '../services/favoriteSongsAPI';
 
 class MusicCard extends React.Component {
   constructor() {
@@ -10,9 +10,9 @@ class MusicCard extends React.Component {
     };
   }
 
-  savefavorite(param) {
-    addSong(param);
-  }
+  // savefavorite(param) {
+  //   addSong(param);
+  // }
 
   render() {
     // const { checked } = this.state;
@@ -20,7 +20,7 @@ class MusicCard extends React.Component {
     return (
       <div>
         <img src={ image } alt="" />
-        <div data-testid="artist-name">{artistNames}</div>
+        <h1 data-testid="artist-name">{artistNames}</h1>
         <div data-testid="album-name">{albumName}</div>
         {album.map(({ trackName, previewUrl }, index) => (
           <section key={ index }>

@@ -35,7 +35,6 @@ class Search extends React.Component {
     this.setState({ loading: false });
     const { valueChange } = this.state;
     const album = await searchAlbumsAPI(valueChange);
-    console.log(album.length);
     if (album.length === 0) {
       this.setState({ invalid: 'Nenhum álbum foi encontrado' });
     }

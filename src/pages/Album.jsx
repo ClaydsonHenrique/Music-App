@@ -18,12 +18,11 @@ class Album extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params: { id } } } = this.props;
-    console.log(id);
-    this.getAlbum(id);
+    this.getAlbum();
   }
 
-  async getAlbum(id) {
+  async getAlbum() {
+    const { match: { params: { id } } } = this.props;
     const musicas = await musicsApi(id);
     console.log('lfsdf', musicas);
     this.setState({ album: musicas });
