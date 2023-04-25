@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Header from '../components/Header';
 import MusicCard from '../components/MusicCard';
-import musicsApi from '../services/musicsAPI';
+import getMusics from '../services/musicsAPI';
 
 class Album extends React.Component {
   constructor() {
@@ -21,40 +21,38 @@ class Album extends React.Component {
     this.getAlbum();
   }
 
-  async getAlbum() {
-    const { match: { params: { id } } } = this.props;
-    const musicas = await musicsApi(id);
-    console.log('lfsdf', musicas);
-    this.setState({ album: musicas });
-    const { album } = this.state;
-    console.log('novo', album);
-    this.addNameAndAlbum(album[1]);
+  componentDidUpdate(_prevProps, prevState) {
+    console.log('did upedate', prevState);
   }
 
-  addNameAndAlbum(param) {
-    if (param) {
-      const { artistName, collectionCensoredName, artworkUrl30 } = param;
-      this.setState({
-        artistNames: artistName,
-        albumName: collectionCensoredName,
-        image: artworkUrl30,
-      });
-    }
+  async getAlbum() {
+    const { match: { params: { id } } } = this.props;
+    const musicas = await getMusics(id);
+    const { artistName } = musicas[0];
+    const { collectionName } = musicas[0];
+    const { artworkUrl60 } = musicas[0];
+    this.setState({ album: musicas,
+      artistNames: artistName,
+      albumName: collectionName,
+      image: artworkUrl60 });
+    const { album } = this.state;
+    console.log(album);
   }
 
   render() {
     const { album, artistNames, albumName, image } = this.state;
-    const newAlbum = album.shift();
     return (
       <>
         <Header />
         <div data-testid="page-album">
+          <img src={ image } alt="" />
+          <h1 data-testid="artist-name">{artistNames}</h1>
+          <h1 data-testid="album-name">
+            {albumName}
+            {artistNames}
+          </h1>
           <MusicCard
-            artistNames={ artistNames }
-            albumName={ albumName }
-            newAlbums={ newAlbum }
             album={ album }
-            image={ image }
           />
         </div>
       </>
