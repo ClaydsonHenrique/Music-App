@@ -10,9 +10,9 @@ class MusicCard extends React.Component {
     };
   }
 
-  // savefavorite(param) {
-  //   addSong(param);
-  // }
+  savefavorite(e) {
+    console.log(e);
+  }
 
   render() {
     // const { checked } = this.state;
@@ -35,10 +35,14 @@ class MusicCard extends React.Component {
                   <code>audio</code>
                   .
                 </audio>
-                <input
-                  type="checkbox"
-                  onChange={ this.savefavorite }
-                />
+                <label>
+                  {' '}
+                  favorita
+                  <input
+                    type="checkbox"
+                    onChange={ this.savefavorite }
+                  />
+                </label>
               </>
             )}
           </section>
