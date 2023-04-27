@@ -1,52 +1,62 @@
 import React from 'react';
 import propTypes from 'prop-types';
-// import { addSong } from '../services/favoriteSongsAPI';
+import { addSong } from '../services/favoriteSongsAPI';
+import Carregando from './Carregando';
 
 class MusicCard extends React.Component {
   constructor() {
     super();
     this.state = {
-      // checked: false,
+      loading: false,
     };
   }
 
-  savefavorite(e) {
-    console.log(e);
+  async savefavorite(song) {
+    this.setState({ loading: true });
+    await addSong(song);
+    this.setState({ loading: false });
+    console.log(song);
   }
 
   render() {
-    // const { checked } = this.state;
+    const { loading } = this.state;
     const { album } = this.props;
     return (
       <div>
-        {album.map(({ trackName, previewUrl }, index) => (
-          <section key={ index }>
-            {index > 0 && (
-              <>
-                <p>
-                  {' '}
-                  {trackName}
-                  {' '}
-                </p>
-                <audio data-testid="audio-component" src={ previewUrl } controls>
-                  <track kind="captions" />
-                  O seu navegador não suporta o elemento
-                  {' '}
-                  <code>audio</code>
-                  .
-                </audio>
-                <label>
-                  {' '}
-                  favorita
-                  <input
-                    type="checkbox"
-                    onChange={ this.savefavorite }
-                  />
-                </label>
-              </>
-            )}
-          </section>
-        ))}
+        {loading ? <Carregando /> : (
+          <div>
+            {album.map(({ trackName, previewUrl, trackId }, index) => (
+              <section key={ index }>
+                {index > 0 && (
+                  <>
+                    <p>
+                      {' '}
+                      {trackName}
+                      {' '}
+                    </p>
+                    <audio data-testid="audio-component" src={ previewUrl } controls>
+                      <track kind="captions" />
+                      O seu navegador não suporta o elemento
+                      {' '}
+                      <code>audio</code>
+                      .
+                    </audio>
+                    <label>
+                      {' '}
+                      favorita
+                      <input
+                        name={ trackName }
+                        data-testid={ `checkbox-music-${trackId}` }
+                        type="checkbox"
+                        onChange={ () => this.savefavorite(album[index]) }
+                      />
+                    </label>
+                  </>
+                )}
+              </section>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
