@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Carregando from './Carregando';
 
 class MusicCard extends React.Component {
@@ -8,18 +8,43 @@ class MusicCard extends React.Component {
     super();
     this.state = {
       loading: false,
+      favoriteTrackIDs: [],
     };
+  }
+
+  async componentDidMount() {
+    const favoriteList = await getFavoriteSongs();
+    const listIds = favoriteList.map((item) => item.trackId);
+    this.setState({ favoriteTrackIDs: listIds });
   }
 
   async savefavorite(song) {
     this.setState({ loading: true });
-    await addSong(song);
-    this.setState({ loading: false });
-    console.log(song);
+    let { favoriteTrackIDs } = this.state;
+    if (favoriteTrackIDs.includes(song.trackId)) {
+      const removeItem = favoriteTrackIDs.filter((item) => item !== song.trackId);
+      favoriteTrackIDs = removeItem;
+      await removeSong(song);
+    } else {
+      favoriteTrackIDs.push(song.trackId);
+      await addSong(song);
+    }
+    this.setState({
+      loading: false,
+      favoriteTrackIDs,
+    });
   }
 
+  // async isMusicFavorite(song) {
+  //   const favoriteList = await getFavoriteSongs();
+  //   const found = favoriteList.find((item) => item.trackId === song.trackId);
+  //   if (found) {
+  //     return true;
+  //   }
+  // }
+
   render() {
-    const { loading } = this.state;
+    const { loading, favoriteTrackIDs } = this.state;
     const { album } = this.props;
     return (
       <div>
@@ -42,9 +67,10 @@ class MusicCard extends React.Component {
                       .
                     </audio>
                     <label>
-                      {' '}
+                      {/* {this.isMusicFavorite(album[index])} */}
                       favorita
                       <input
+                        checked={ favoriteTrackIDs.includes(trackId) }
                         name={ trackName }
                         data-testid={ `checkbox-music-${trackId}` }
                         type="checkbox"
