@@ -28,7 +28,7 @@ class Profile extends React.Component {
 
   render() {
     const { loading, usuarios } = this.state;
-    const { email, image, name, description } = usuarios;
+    const { email, image, description, name } = usuarios;
     return (
       <>
         <Header />
@@ -36,7 +36,7 @@ class Profile extends React.Component {
           : (
             <div data-testid="page-profile">
               <h1>perfil</h1>
-              <Link to="/profile/edit">Editar perfil</Link>
+              <Link to="/profile/edit"><h1>Editar perfil</h1></Link>
               <div>
                 <h3>Name</h3>
                 <p>{name}</p>
