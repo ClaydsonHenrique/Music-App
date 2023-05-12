@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getUser, updateUser } from '../services/userAPI';
 import Carregando from '../components/Carregando';
@@ -12,7 +12,6 @@ class ProfileEdit extends React.Component {
       email: '',
       image: '',
       description: '',
-      redirect: false,
       disable: true,
       loading: false,
     };
@@ -61,16 +60,14 @@ class ProfileEdit extends React.Component {
   };
 
   formSubmit = async () => {
-    const { nome,
+    const {
+      nome,
       email,
       image,
       description } = this.state;
-    this.setState({ loading: true });
+    const { history } = this.props;
     await updateUser({ name: nome, email, image, description });
-    this.setState({
-      redirect: true,
-      loading: false,
-    });
+    history.push('/profile');
   };
 
   render() {
@@ -80,76 +77,76 @@ class ProfileEdit extends React.Component {
       description,
       disable,
       loading,
-      redirect } = this.state;
+    } = this.state;
 
-    if (redirect) {
-      return <Redirect to="/profile" />;
-    }
     return (
-      <>
+      <div data-testid="page-profile-edit">
         <Header />
-        { loading ? <Carregando />
-          : (
-            <div data-testid="page-profile-edit">
-              <form onSubmit={ this.formSubmit }>
-                <label>
-                  name
-                  <input
-                    onChange={ this.onInputChange }
-                    data-testid="edit-input-name"
-                    type="text"
-                    name="nome"
-                    id="name"
-                    value={ nome }
-                  />
-                </label>
-                <label>
-                  email
-                  <input
-                    onChange={ this.onInputChange }
-                    data-testid="edit-input-email"
-                    type="text"
-                    name="email"
-                    id="email"
-                    value={ email }
-                  />
-                </label>
-                <label>
-                  Description
-                  <input
-                    onChange={ this.onInputChange }
-                    data-testid="edit-input-description"
-                    type="text"
-                    name="description"
-                    id="description"
-                    value={ description }
-                  />
-                </label>
-                <label>
-                  image
-                  <input
-                    onChange={ this.onInputChange }
-                    data-testid="edit-input-image"
-                    type="text"
-                    name="image"
-                    id="image"
-                    value={ image }
-                  />
-                </label>
-                <button
-                  type="submit"
-                  data-testid="edit-button-save"
-                  disabled={ disable }
-                >
-                  submit
+        { loading && <Carregando />}
+        <h1>Editar perfil</h1>
+        <label>
+          name
+          <input
+            onChange={ this.onInputChange }
+            data-testid="edit-input-name"
+            type="text"
+            name="nome"
+            id="name"
+            value={ nome }
+          />
+        </label>
+        <label>
+          email
+          <input
+            onChange={ this.onInputChange }
+            data-testid="edit-input-email"
+            type="text"
+            name="email"
+            id="email"
+            value={ email }
+          />
+        </label>
+        <label>
+          Description
+          <input
+            onChange={ this.onInputChange }
+            data-testid="edit-input-description"
+            type="text"
+            name="description"
+            id="description"
+            value={ description }
+          />
+        </label>
+        <label>
+          image
+          <input
+            onChange={ this.onInputChange }
+            data-testid="edit-input-image"
+            type="text"
+            name="image"
+            id="image"
+            value={ image }
+          />
+        </label>
+        <button
+          data-testid="edit-button-save"
+          disabled={ disable }
+          onClick={ this.formSubmit }
+        >
+          Salvar
 
-                </button>
-              </form>
-            </div>
-          )}
-      </>
+        </button>
+
+      </div>
+
     );
   }
 }
 
-export default withRouter(ProfileEdit);
+export default ProfileEdit;
+
+ProfileEdit.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
