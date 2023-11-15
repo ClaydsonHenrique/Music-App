@@ -20,7 +20,6 @@ class MusicCard extends React.Component {
   }
 
   async savefavorite(song) {
-    this.setState({ loading: true });
     let { favoriteTrackIDs } = this.state;
     if (favoriteTrackIDs.includes(song.trackId)) {
       const removeItem = favoriteTrackIDs.filter((item) => item !== song.trackId);
@@ -69,7 +68,11 @@ class MusicCard extends React.Component {
                     </audio>
                     <label>
                       {/* {this.isMusicFavorite(album[index])} */}
-                      <FaHeart style={ { color: 'red' } } />
+                      <FaHeart
+                        style={ {
+                          color: `${favoriteTrackIDs.includes(trackId)
+                            ? 'red' : 'grey'}` } }
+                      />
                       <input
                         checked={ favoriteTrackIDs.includes(trackId) }
                         name={ trackName }

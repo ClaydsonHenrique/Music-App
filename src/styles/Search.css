@@ -70,12 +70,25 @@
 .container-albums {
   width: 12.5rem;
   height: 15.5625rem;
- 
+
 }
 
 .imgAlbum {
   width: 12.5rem;
   height: 12.5rem;
+}
+
+.imgBg h1 {
+  text-align: center;
+  color: #FFF;
+  text-align: center;
+  font-family: Epilogue;
+  font-size: 1.65rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-left: 20rem;
+  margin-top: 6%;
 }
 
 .titleSearch {
