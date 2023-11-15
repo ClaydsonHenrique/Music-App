@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
 import Carregando from '../components/Carregando';
+import '../styles/Login.css';
+import logo from '../images/login.svg';
 
 class Login extends React.Component {
   constructor() {
@@ -23,7 +25,8 @@ class Login extends React.Component {
     await createUser({ name: nome });
     this.setState({
       redirect: true,
-      loading: false });
+      loading: false,
+    });
   };
 
   validateInput = ({ target }) => {
@@ -53,27 +56,31 @@ class Login extends React.Component {
       return <Redirect to="/search" />;
     }
     return (
-      <div data-testid="page-login">
-        { !loading
+      <section className="containerLogin">
+        {!loading
           ? (
-            <form onSubmit={ this.createName }>
-              <input
-                onChange={ this.validateInput }
-                value={ nome }
-                type="text"
-                data-testid="login-name-input"
-                placeholder="nome"
-              />
-              <button
-                type="submit"
-                data-testid="login-submit-button"
-                disabled={ disable }
-              >
-                Entrar
-              </button>
-            </form>)
-          : <Carregando /> }
-      </div>
+            <div className="page-login">
+              <div><img src={ logo } alt="" /></div>
+              <form onSubmit={ this.createName } className="loginForm">
+                <input
+                  onChange={ this.validateInput }
+                  value={ nome }
+                  type="text"
+                  className="login-name-input"
+                  placeholder="nome"
+                />
+                <button
+                  type="submit"
+                  className="login-submit-button"
+                  disabled={ disable }
+                >
+                  Entrar
+                </button>
+              </form>
+            </div>)
+          : <Carregando />}
+
+      </section>
     );
   }
 }

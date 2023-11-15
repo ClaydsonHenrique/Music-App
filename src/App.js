@@ -13,8 +13,7 @@ import Carregando from './components/Carregando';
 class App extends React.Component {
   render() {
     return (
-      <>
-        <p>TrybeTunes</p>
+      <section className="page">
         <div>
           <Switch>
             <Route exact component={ Login } path="/" />
@@ -27,7 +26,7 @@ class App extends React.Component {
             <Route component={ NotFound } path="*" />
           </Switch>
         </div>
-      </>
+      </section>
     );
   }
 }
