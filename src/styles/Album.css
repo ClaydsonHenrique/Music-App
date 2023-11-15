@@ -1,0 +1,83 @@
+.containerAlbum {
+  display: flex;
+  justify-content: start;
+  background-color: #EFF3F9;
+  ;
+  width: 100%;
+}
+
+
+
+.page-album {
+  z-index: 22;
+  margin-left: 60rem;
+}
+
+.containerAlbum .containerMenu {
+  z-index: 222;
+  position: fixed;
+}
+
+
+.aaa {
+  z-index: 1;
+}
+
+.bbbb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -40rem;
+  margin-bottom: -8rem;
+}
+
+.containerTitles {
+  margin-top: 2rem;
+  margin-left: 1rem;
+  line-height: 1.8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-name {
+  color: #FFF;
+  font-family: Epilogue;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+}
+
+.album-name {
+  color: #FFF;
+  font-family: Epilogue;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+audio {
+  width: 23.20656rem;
+  height: 3.49688rem;
+}
+
+audio::-webkit-media-controls-panel {
+
+  border-radius: 2.64913rem;
+  background: #FFF;
+}
+
+.muscis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom:1px solid #CCD4E1;
+  gap: 40px;
+}
+
+.trackname {
+  width: 11.375rem;
+  height: 1.75rem;
+}

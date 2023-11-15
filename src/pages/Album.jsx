@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Header from '../components/Header';
 import MusicCard from '../components/MusicCard';
 import getMusics from '../services/musicsAPI';
+import '../styles/Album.css';
 
 class Album extends React.Component {
   constructor() {
@@ -31,10 +32,12 @@ class Album extends React.Component {
     const { artistName } = musicas[0];
     const { collectionName } = musicas[0];
     const { artworkUrl60 } = musicas[0];
-    this.setState({ album: musicas,
+    this.setState({
+      album: musicas,
       artistNames: artistName,
       albumName: collectionName,
-      image: artworkUrl60 });
+      image: artworkUrl60,
+    });
     const { album } = this.state;
     console.log(album);
   }
@@ -42,20 +45,33 @@ class Album extends React.Component {
   render() {
     const { album, artistNames, albumName, image } = this.state;
     return (
-      <>
+      <main className="containerAlbum">
         <Header />
-        <div data-testid="page-album">
-          <img src={ image } alt="" />
-          <h1 data-testid="artist-name">{artistNames}</h1>
-          <h1 data-testid="album-name">
-            {albumName}
-            {artistNames}
-          </h1>
-          <MusicCard
-            album={ album }
-          />
-        </div>
-      </>
+        <div className="imgBg" />
+        <section className="aaa">
+          <div className="bbbb">
+            <img
+              src={ image }
+              alt=""
+              className="imgPerfilEdit"
+              style={ { borderRadius: '0' } }
+            />
+            <div className="containerTitles">
+              <h1 className="artist-name">{artistNames}</h1>
+              <h1 className="album-name">
+                {albumName}
+                {artistNames}
+              </h1>
+            </div>
+          </div>
+          <div className="page-album">
+
+            <MusicCard
+              album={ album }
+            />
+          </div>
+        </section>
+      </main>
     );
   }
 }

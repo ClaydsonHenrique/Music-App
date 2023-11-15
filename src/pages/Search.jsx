@@ -69,29 +69,30 @@ class Search extends React.Component {
                   type="text"
                   className="search-artist-input"
                   onChange={ this.validateInput }
+                  placeholder="nome do artista"
                 />
                 <button
                   onClick={ this.findArtist }
                   className="search-artist-button"
                   disabled={ disable }
+
                 >
                   Pesquisar
                 </button>
               </div>
+              {albums.length === 0
+                ? <p style={ { textAlign: 'center', marginTop: '40vh' } }>{invalid}</p>
+                : <p className="titleSearch">{resposta}</p>}
               <div className="AllAlbuns">
-                {albums.length === 0
-                  ? <p>{invalid}</p>
-                  : <p>{resposta}</p> }
+
                 {albums.map((
-                  { artistId,
-                    artistName,
+                  { artistName,
                     artworkUrl100,
                     collectionName,
                     collectionId },
                   index,
                 ) => (
                   <div key={ index } className="container-albums">
-                    <img src={ artworkUrl100 } alt="" className="imgAlbum" />
                     <p>
                       {' '}
                       <Link
@@ -99,11 +100,10 @@ class Search extends React.Component {
                         data-testid={ `link-to-album-${collectionId}` }
                         to={ `/album/${collectionId}` }
                       >
+                        <img src={ artworkUrl100 } alt="" className="imgAlbum" />
                         {collectionName}
                       </Link>
-
                     </p>
-                    <p>{artistId}</p>
                     <p>{artistName}</p>
                   </div>
                 ))}

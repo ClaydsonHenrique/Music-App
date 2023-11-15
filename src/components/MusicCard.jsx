@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { FaHeart } from 'react-icons/fa';
 import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Carregando from './Carregando';
 
@@ -51,10 +52,10 @@ class MusicCard extends React.Component {
         {loading ? <Carregando /> : (
           <div>
             {album.map(({ trackName, previewUrl, trackId }, index) => (
-              <section key={ index }>
+              <section key={ index } className="muscis">
                 {index > 0 && (
                   <>
-                    <p>
+                    <p className="trackname">
                       {' '}
                       {trackName}
                       {' '}
@@ -68,12 +69,13 @@ class MusicCard extends React.Component {
                     </audio>
                     <label>
                       {/* {this.isMusicFavorite(album[index])} */}
-                      favorita
+                      <FaHeart style={ { color: 'red' } } />
                       <input
                         checked={ favoriteTrackIDs.includes(trackId) }
                         name={ trackName }
                         data-testid={ `checkbox-music-${trackId}` }
                         type="checkbox"
+                        style={ { display: 'none' } }
                         onChange={ () => this.savefavorite(album[index]) }
                       />
                     </label>
