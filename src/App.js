@@ -16,7 +16,7 @@ class App extends React.Component {
       <section className="page">
         <div>
           <Switch>
-            <Route exact component={ Login } path="/" />
+            <Route exact component={ Login } path="/Music-App" />
             <Route exact component={ Search } path="/Search" />
             <Route exact component={ Album } path="/Album/:id" />
             <Route exact component={ Favorites } path="/Favorites" />
