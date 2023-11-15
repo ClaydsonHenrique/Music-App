@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import { getUser } from '../services/userAPI';
+import '../styles/Header.css';
+import { FaSearch } from 'react-icons/fa';
+import { GrFavorite } from 'react-icons/gr';
+import { LiaUserCircleSolid } from 'react-icons/lia';
 import Carregando from './Carregando';
+import logo from '../images/login.svg';
+import { getUser } from '../services/userAPI';
 
 class Header extends React.Component {
   constructor() {
@@ -29,13 +34,15 @@ class Header extends React.Component {
       loading,
     } = this.state;
     return (
-      <div>
+      <div className="containerMenu">
         {
           loading
             ? (
-              <header data-testid="header-component">
+              <header className="links">
+                <img src={ logo } alt="" className="logo" />
                 <ul>
                   <li>
+                    <FaSearch />
                     <Link
                       className="link"
                       data-testid="link-to-search"
@@ -46,6 +53,7 @@ class Header extends React.Component {
 
                   </li>
                   <li>
+                    <GrFavorite />
                     <Link
                       className="link"
                       data-testid="link-to-favorites"
@@ -56,20 +64,17 @@ class Header extends React.Component {
 
                   </li>
                   <li>
+                    <LiaUserCircleSolid className="icon" />
                     <Link
                       className="link"
                       data-testid="link-to-profile"
                       to="/profile"
                     >
                       profile
-
                     </Link>
-
                   </li>
                 </ul>
-
-                <p data-testid="header-user-name">{name}</p>
-
+                <div><p className="header-user-name">{name}</p></div>
               </header>)
             : <Carregando />
         }

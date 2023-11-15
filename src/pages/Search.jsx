@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../components/Header';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
+import '../styles/Search.css';
 
 class Search extends React.Component {
   constructor() {
@@ -56,28 +57,28 @@ class Search extends React.Component {
       disable,
     } = this.state;
     return (
-      <>
+      <section className="containerSearch">
         <Header />
         {
           loading ? (
-            <>
-              <div data-testid="page-search">
+            <section className="continerSonds">
+              <div className="page-search">
                 <input
                   value={ valueChange }
                   name="find"
                   type="text"
-                  data-testid="search-artist-input"
+                  className="search-artist-input"
                   onChange={ this.validateInput }
                 />
                 <button
                   onClick={ this.findArtist }
-                  data-testid="search-artist-button"
+                  className="search-artist-button"
                   disabled={ disable }
                 >
                   Pesquisar
                 </button>
               </div>
-              <div>
+              <div className="AllAlbuns">
                 {albums.length === 0
                   ? <p>{invalid}</p>
                   : <p>{resposta}</p> }
@@ -90,6 +91,7 @@ class Search extends React.Component {
                   index,
                 ) => (
                   <div key={ index } className="container-albums">
+                    <img src={ artworkUrl100 } alt="" className="imgAlbum" />
                     <p>
                       {' '}
                       <Link
@@ -103,15 +105,14 @@ class Search extends React.Component {
                     </p>
                     <p>{artistId}</p>
                     <p>{artistName}</p>
-                    <img src={ artworkUrl100 } alt="" />
                   </div>
                 ))}
               </div>
-            </>
+            </section>
           )
             : <Carregando />
         }
-      </>
+      </section>
     );
   }
 }

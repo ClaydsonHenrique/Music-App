@@ -1,0 +1,48 @@
+.containerSearch {
+  display: flex;
+  width: 100vw;
+}
+
+.page-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15rem;
+  width: calc(100vw - 20rem);
+  background: linear-gradient(124deg, #003BE5 12.08%, #00D5E2 86.52%);
+}
+
+.search-artist-input {
+  width: 25rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 1.4375rem;
+  background: rgba(255, 255, 255, 0.50);
+}
+
+.search-artist-button {
+  width: 7.125rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 1.4375rem;
+  background: #00D5E2;
+  color: #FFF;
+  font-family: Epilogue;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.02625rem;
+  text-transform: uppercase;
+}
+.AllAlbuns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.imgAlbum {
+  width: 12.5rem;
+  height: 12.5rem;
+  border-radius: 0.625rem;
+}

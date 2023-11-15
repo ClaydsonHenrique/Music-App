@@ -1,0 +1,52 @@
+* {
+  text-decoration: none;
+}
+
+.containerMenu {
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+  width: 20rem;
+  z-index: 10000;
+}
+
+.links {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #444955;
+  font-family: Epilogue;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.03rem;
+  text-transform: capitalize;
+}
+
+.logo {
+  margin-top: 30px;
+}
+
+.header-user-name {
+  margin-bottom: 50px;
+}
+ li{
+  text-align: center;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s;
+}
+
+li:hover{
+  transform: scale(1.1);
+}
+
+.icon {
+  width: 1.4375rem;
+  height: 1.4375rem;
+}
