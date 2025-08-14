@@ -16,16 +16,15 @@ class App extends React.Component {
     return (
       <section className="page">
         <div>
+          <Route exact component={ Sidebar } />
           <Switch>
-            <Route exact component={ Sidebar }>
-              <Route exact component={ Login } path="/Music-App" />
-              <Route exact component={ Search } path="/Search" />
-              <Route exact component={ Album } path="/Album/:id" />
-              <Route exact component={ Favorites } path="/Favorites" />
-              <Route exact component={ Profile } path="/Profile" />
-              <Route exact component={ Carregando } path="/carregando" />
-              <Route exact component={ ProfileEdit } path="/Profile/:edit" />
-            </Route>
+            <Route exact component={ Login } path="/Music-App" />
+            <Route exact component={ Search } path="/Search" />
+            <Route exact component={ Album } path="/Album/:id" />
+            <Route exact component={ Favorites } path="/Favorites" />
+            <Route exact component={ Profile } path="/Profile" />
+            <Route exact component={ Carregando } path="/carregando" />
+            <Route exact component={ ProfileEdit } path="/Profile/:edit" />
             <Route component={ NotFound } path="*" />
           </Switch>
         </div>
