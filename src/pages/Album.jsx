@@ -1,7 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import Header from '../components/Header';
 import MusicCard from '../components/MusicCard';
 import getMusics from '../services/musicsAPI';
 import '../styles/Album.css';
@@ -46,7 +45,6 @@ class Album extends React.Component {
     const { album, artistNames, albumName, image } = this.state;
     return (
       <main className="containerAlbum">
-        <Header />
         <div className="imgBg" />
         <section className="aaa">
           <div className="bbbb">

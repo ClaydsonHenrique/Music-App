@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import Header from '../components/Header';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
 import '../styles/Search.css';
@@ -58,7 +57,6 @@ class Search extends React.Component {
     } = this.state;
     return (
       <section className="containerSearch">
-        <Header />
         {
           loading ? (
             <section className="continerSonds">

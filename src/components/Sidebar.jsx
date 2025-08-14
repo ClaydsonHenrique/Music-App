@@ -8,7 +8,7 @@ import Carregando from './Carregando';
 import logo from '../images/login.svg';
 import { getUser } from '../services/userAPI';
 
-class Header extends React.Component {
+class Sidebar extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -82,4 +82,4 @@ class Header extends React.Component {
     );
   }
 }
-export default Header;
+export default Sidebar;

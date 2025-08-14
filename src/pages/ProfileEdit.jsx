@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
 import { getUser, updateUser } from '../services/userAPI';
 import Carregando from '../components/Carregando';
 
@@ -81,7 +80,6 @@ class ProfileEdit extends React.Component {
 
     return (
       <div data-testid="page-profile-edit">
-        <Header />
         { loading && <Carregando />}
         <h1>Editar perfil</h1>
         <label>

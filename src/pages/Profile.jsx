@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import Header from '../components/Header';
 import { getUser } from '../services/userAPI';
 import '../styles/Profile.css';
 
@@ -28,7 +27,6 @@ class Profile extends React.Component {
     const { email, image, description, name } = usuarios;
     return (
       <section className="containerProfile">
-        <Header />
         <div className="imgBg" />
         <div className="imgPerfilEdit">
           <img className="profile-image" src={ image } alt="perfil" />

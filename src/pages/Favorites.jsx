@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
-import Header from '../components/Header';
 import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 class Favorites extends React.Component {
@@ -30,7 +29,6 @@ class Favorites extends React.Component {
     console.log(favoriteTrackIDs);
     return (
       <main className="containerAlbum " style={ { height: '100vh' } }>
-        <Header />
         <div className="imgBg">
           <h1>Musicas favoritas</h1>
         </div>
