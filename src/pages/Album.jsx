@@ -1,31 +1,29 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import MusicCard from '../components/MusicCard';
 import getMusics from '../services/musicsAPI';
-import '../styles/Album.css';
 
-class Album extends React.Component {
-  constructor() {
-    super();
+function Album() {
+  const [artistNames, setArtistNames] = React.useState('');
+  const [albumName, setAlbumName] = React.useState('');
+  const [image, setImage] = React.useState('');
+  const [album, setAlbum] = React.useState([]);
 
-    this.state = {
-      album: [],
-      artistNames: '',
-      albumName: '',
-      image: '',
+  useEffect(() => {
+    const getAlbum = async () => {
+      const { match: { params: { id } } } = this.props;
+      const musicas = await getMusics(id);
+      const { artistName } = musicas[0];
+      const { collectionName } = musicas[0];
+      const { artworkUrl60 } = musicas[0];
+      setArtistNames(artistName);
+      setAlbumName(collectionName);
+      setImage(artworkUrl60);
     };
-  }
+    getAlbum();
+  });
 
-  componentDidMount() {
-    this.getAlbum();
-  }
-
-  componentDidUpdate(_prevProps, prevState) {
-    console.log('did upedate', prevState);
-  }
-
-  async getAlbum() {
+  const getAlbum = async () => {
     const { match: { params: { id } } } = this.props;
     const musicas = await getMusics(id);
     const { artistName } = musicas[0];
@@ -39,41 +37,36 @@ class Album extends React.Component {
     });
     const { album } = this.state;
     console.log(album);
-  }
-
-  render() {
-    const { album, artistNames, albumName, image } = this.state;
-    return (
-      <main className="containerAlbum">
-        <div className="imgBg" />
-        <section className="aaa">
-          <div className="bbbb">
-            <img
-              src={ image }
-              alt=""
-              className="imgPerfilEdit"
-              style={ { borderRadius: '0' } }
-            />
-            <div className="containerTitles">
-              <h1 className="artist-name">{artistNames}</h1>
-              <h1 className="album-name">
-                {albumName}
-                {artistNames}
-              </h1>
-            </div>
+  };
+  return (
+    <main className="containerAlbum">
+      <div className="imgBg" />
+      <section className="aaa">
+        <div className="bbbb">
+          <img
+            src={ image }
+            alt=""
+            className="imgPerfilEdit"
+            style={ { borderRadius: '0' } }
+          />
+          <div className="containerTitles">
+            <h1 className="artist-name">{artistNames}</h1>
+            <h1 className="album-name">
+              {albumName}
+              {artistNames}
+            </h1>
           </div>
-          <div className="page-album">
+        </div>
+        <div className="page-album">
 
-            <MusicCard
-              album={ album }
-            />
-          </div>
-        </section>
-      </main>
-    );
-  }
+          <MusicCard
+            album={ album }
+          />
+        </div>
+      </section>
+    </main>
+  );
 }
-
 Album.propTypes = {
   match: propTypes.shape({
     params: propTypes.shape({
@@ -82,4 +75,4 @@ Album.propTypes = {
   }).isRequired,
 };
 
-export default withRouter(Album);
+export default Album;

@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
 import Carregando from '../components/Carregando';
-import '../styles/Login.css';
 import logo from '../images/login.svg';
 
 class Login extends React.Component {

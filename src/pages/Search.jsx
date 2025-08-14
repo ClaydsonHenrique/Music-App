@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
-import '../styles/Search.css';
 
 class Search extends React.Component {
   constructor() {
