@@ -6,11 +6,12 @@ import Carregando from './Carregando';
 export default function Sidebar() {
 
   const navigation = [
-    { name: 'Search', path: '/search', icon: Search },
-    { name: 'Favorites', path: '/favorites', icon: Heart },
-    { name: 'Profile', path: '/profile', icon: User },
-    { name: 'Profile Edit', path: '/profile/edit', icon: Settings },
+    { name: 'Search', path: '/Search', icon: Search },
+    { name: 'Favorites', path: '/Favorites', icon: Heart },
+    { name: 'Profile', path: '/Profile', icon: User },
   ];
+  
+  console.log('testando navigation', navigation);
 
   return (
     <div className="w-64 bg-black h-screen p-6">
@@ -25,7 +26,7 @@ export default function Sidebar() {
           return (
             <Link
               key={item.name}
-              to={item.href}
+              to={item.path}
               className="flex items-center gap-3 text-sm font-medium text-gray-400 hover:text-white transition-colors"
             >
               <Icon className="h-5 w-5" />
