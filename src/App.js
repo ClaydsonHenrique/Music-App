@@ -14,7 +14,7 @@ import Subscription from './pages/Subscription';
 class App extends React.Component {
   render() {
     return (
-      <div className="flex">
+      <div className="flex h-screen">
         <Sidebar /> 
         <main className="flex-1 p-4 h-screen bg-zinc-900">
           <Switch>

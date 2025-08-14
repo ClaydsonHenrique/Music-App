@@ -12,7 +12,7 @@ export default function Sidebar() {
   ];
   
   return (
-    <div className="w-64 bg-black h-screen p-6">
+    <div className="w-64 bg-black p-6">
       <Link to="/">
         <div className="flex items-center gap-2 mb-8">
           <Music className="h-8 w-8 text-white" />
