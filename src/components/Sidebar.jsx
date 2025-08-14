@@ -6,19 +6,19 @@ import Carregando from './Carregando';
 export default function Sidebar() {
 
   const navigation = [
-    { name: 'Search', path: '/Search', icon: Search },
-    { name: 'Favorites', path: '/Favorites', icon: Heart },
-    { name: 'Profile', path: '/Profile', icon: User },
+    { name: 'Search', path: '/search', icon: Search },
+    { name: 'Favorites', path: '/favorites', icon: Heart },
+    { name: 'Profile', path: '/profile', icon: User },
   ];
   
-  console.log('testando navigation', navigation);
-
   return (
     <div className="w-64 bg-black h-screen p-6">
-      <div className="flex items-center gap-2 mb-8">
-        <Music className="h-8 w-8 text-white" />
-        <span className="text-white text-xl font-bold">Musicfy</span>
-      </div>
+      <Link to="/">
+        <div className="flex items-center gap-2 mb-8">
+          <Music className="h-8 w-8 text-white" />
+          <span className="text-white text-xl font-bold">Musicfy</span>
+        </div>
+        </Link>
 
       <nav className="space-y-4">
         {navigation.map((item) => {

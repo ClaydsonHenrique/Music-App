@@ -35,13 +35,6 @@ class MusicCard extends React.Component {
     });
   }
 
-  // async isMusicFavorite(song) {
-  //   const favoriteList = await getFavoriteSongs();
-  //   const found = favoriteList.find((item) => item.trackId === song.trackId);
-  //   if (found) {
-  //     return true;
-  //   }
-  // }
 
   render() {
     const { loading, favoriteTrackIDs } = this.state;
