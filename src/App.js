@@ -10,13 +10,16 @@ import ProfileEdit from './pages/ProfileEdit';
 import Carregando from './components/Carregando';
 import Sidebar from './components/Sidebar';
 import Subscription from './pages/Subscription';
+import MusicPlayer from './components/MusicPlayer';
+import MusicContext from './context/MusicContext';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="flex h-screen">
-        <Sidebar /> 
-        <main className="flex-1 p-4 h-screen bg-zinc-900">
+function App() {
+  const [music, setMusic] = React.useState([]);
+  return (
+    <main className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex-1 p-4 bg-zinc-900">
+        <MusicContext.Provider value={{ music, setMusic }}>
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/search" component={Search} />
@@ -28,10 +31,15 @@ class App extends React.Component {
             <Route exact path="/subscription" component={Subscription} />
             <Route component={NotFound} />
           </Switch>
-        </main>
+        </MusicContext.Provider>
+        {
+          music && music.previewUrl && (
+            <MusicPlayer music={music} />
+          )
+        }
       </div>
-    );
-  }
+    </main>
+  );
 }
 
 export default App;

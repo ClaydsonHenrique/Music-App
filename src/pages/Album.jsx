@@ -1,7 +1,7 @@
 import React from 'react';
-import propTypes from 'prop-types';
 import MusicCard from '../components/MusicCard';
 import getMusics from '../services/musicsAPI';
+import { useParams } from 'react-router-dom';
 
 function Album() {
   const [artistNames, setArtistNames] = React.useState('');
@@ -9,70 +9,54 @@ function Album() {
   const [image, setImage] = React.useState('');
   const [album, setAlbum] = React.useState([]);
 
-  useEffect(() => {
-    const getAlbum = async () => {
-      const { match: { params: { id } } } = this.props;
-      const musicas = await getMusics(id);
-      const { artistName } = musicas[0];
-      const { collectionName } = musicas[0];
-      const { artworkUrl60 } = musicas[0];
-      setArtistNames(artistName);
-      setAlbumName(collectionName);
-      setImage(artworkUrl60);
-    };
-    getAlbum();
-  });
+  const { id } = useParams()
+
 
   const getAlbum = async () => {
-    const { match: { params: { id } } } = this.props;
     const musicas = await getMusics(id);
+    if (musicas.length === 0) {
+      console.error('No music found for the given album ID:', id);
+      return;
+    }
+    
     const { artistName } = musicas[0];
     const { collectionName } = musicas[0];
     const { artworkUrl60 } = musicas[0];
-    this.setState({
-      album: musicas,
-      artistNames: artistName,
-      albumName: collectionName,
-      image: artworkUrl60,
-    });
-    const { album } = this.state;
-    console.log(album);
+    setArtistNames(artistName);
+    setAlbumName(collectionName);
+    setImage(artworkUrl60);
+    setAlbum(musicas);
   };
+
+  React.useEffect(() => {
+    getAlbum();
+  }, [id]);
+
+  
   return (
-    <main className="containerAlbum">
-      <div className="imgBg" />
-      <section className="aaa">
-        <div className="bbbb">
+    <main className="">
+      <div className="" />
+      <section className="">
+        <div className="">
           <img
-            src={ image }
+            src={image}
             alt=""
-            className="imgPerfilEdit"
-            style={ { borderRadius: '0' } }
+            className="w-full h-64 object-cover mb-4 "
+            style={{ borderRadius: '0' }}
           />
-          <div className="containerTitles">
-            <h1 className="artist-name">{artistNames}</h1>
-            <h1 className="album-name">
+          <div className="flex items-center gap-4 mt-4 mb-4 text-white ">
+            <h1 className=" flex items-center gap-4 mt-4 mb-4 text-white">{artistNames}</h1>
+            <h1 className="text-2xl font-bold text-white truncate max-w-md ">
               {albumName}
               {artistNames}
             </h1>
           </div>
         </div>
-        <div className="page-album">
-
           <MusicCard
-            album={ album }
+            album={album}
           />
-        </div>
       </section>
     </main>
   );
 }
-Album.propTypes = {
-  match: propTypes.shape({
-    params: propTypes.shape({
-      id: propTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
 export default Album;

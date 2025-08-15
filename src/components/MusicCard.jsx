@@ -3,95 +3,84 @@ import propTypes from 'prop-types';
 import { FaHeart } from 'react-icons/fa';
 import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Carregando from './Carregando';
+import MusicContext from '../context/MusicContext';
 
-class MusicCard extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: false,
-      favoriteTrackIDs: [],
-    };
-  }
+function MusicCard({ album }) {
 
-  async componentDidMount() {
+
+  const [loading, setLoading] = React.useState(false);
+  const [favoriteTrackIDs, setFavoriteTrackIDs] = React.useState([]);
+
+  const { music, setMusic } = React.useContext(MusicContext);
+
+  const addFavorite = async () => {
     const favoriteList = await getFavoriteSongs();
+    console.log('Favorite List:', favoriteList);
     const listIds = favoriteList.map((item) => item.trackId);
-    this.setState({ favoriteTrackIDs: listIds });
+    setFavoriteTrackIDs(listIds);
   }
 
-  async savefavorite(song) {
-    let { favoriteTrackIDs } = this.state;
+  const savefavorite = async (song) => {
     if (favoriteTrackIDs.includes(song.trackId)) {
       const removeItem = favoriteTrackIDs.filter((item) => item !== song.trackId);
-      favoriteTrackIDs = removeItem;
+      setFavoriteTrackIDs(removeItem);
       await removeSong(song);
     } else {
       favoriteTrackIDs.push(song.trackId);
       await addSong(song);
     }
-    this.setState({
-      loading: false,
-      favoriteTrackIDs,
-    });
+
+    setLoading(false);
+    setFavoriteTrackIDs(favoriteTrackIDs);
+
   }
 
 
-  render() {
-    const { loading, favoriteTrackIDs } = this.state;
-    const { album } = this.props;
-    return (
-      <div>
-        {loading ? <Carregando /> : (
-          <div>
-            {album.map(({ trackName, previewUrl, trackId }, index) => (
-              <section key={ index } className="muscis">
-                {index > 0 && (
-                  <>
-                    <p className="trackname">
-                      {' '}
-                      {trackName}
-                      {' '}
-                    </p>
-                    <audio data-testid="audio-component" src={ previewUrl } controls>
-                      <track kind="captions" />
-                      O seu navegador não suporta o elemento
-                      {' '}
-                      <code>audio</code>
-                      .
-                    </audio>
-                    <label>
-                      {/* {this.isMusicFavorite(album[index])} */}
-                      <FaHeart
-                        style={ {
-                          color: `${favoriteTrackIDs.includes(trackId)
-                            ? 'red' : 'grey'}` } }
-                      />
-                      <input
-                        checked={ favoriteTrackIDs.includes(trackId) }
-                        name={ trackName }
-                        data-testid={ `checkbox-music-${trackId}` }
-                        type="checkbox"
-                        style={ { display: 'none' } }
-                        onChange={ () => this.savefavorite(album[index]) }
-                      />
-                    </label>
-                  </>
-                )}
+
+  console.log(music)
+
+  return (
+    <div>
+      {loading ? <Carregando /> : (
+        <div >
+          {album.map(({ trackName, previewUrl, trackId }, index) => {
+            if (!previewUrl) return null;
+            return (
+              <section key={index} className="muscis flex items-center gap-4 bg-white/5 p-3 rounded-lg hover:bg-white/10 cursor-pointer"
+                onClick={() => setMusic(album[index])}
+              >
+
+                <p className="trackname text-gray-400 ">
+                  {' '}
+                  {trackName}
+                  {' '}
+                </p>
+                <label>
+                  {/* {this.isMusicFavorite(album[index])} */}
+                  <FaHeart
+                    style={{
+                      color: `${favoriteTrackIDs.includes(trackId)
+                        ? 'red' : 'grey'}`
+                    }}
+                  />
+                  <input
+                    checked={favoriteTrackIDs.includes(trackId)}
+                    name={trackName}
+                    data-testid={`checkbox-music-${trackId}`}
+                    type="checkbox"
+                    style={{ display: 'none' }}
+                    onChange={() => savefavorite(album[index])}
+                  />
+                </label>
               </section>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
+            )
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
+
+
 export default MusicCard;
 
-MusicCard.propTypes = {
-  album: propTypes.arrayOf(
-    propTypes.shape({
-      trackName: propTypes.string,
-      previewUrl: propTypes.string,
-    }),
-  ).isRequired,
-};

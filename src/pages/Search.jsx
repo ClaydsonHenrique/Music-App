@@ -1,10 +1,12 @@
 import React from 'react';
-import { Search as SearchIcon, Play } from 'lucide-react';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Search as SearchIcon } from 'lucide-react';
+import { useHistory } from 'react-router-dom';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
 import Carregando from '../components/Carregando';
 
 function Search() {
+
+  const history = useHistory();
 
   const [invalid, setInvalid] = React.useState('');
   const [resposta, setResposta] = React.useState('');
@@ -13,8 +15,8 @@ function Search() {
   const [disable, setDisable] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
   const [limitAlbums, setLimitAlbums] = React.useState(10);
-  const [indexAlbun, setIndexAlbun] = React.useState(0);
-  const [countRenderPage, setCountRenderPage] = React.useState(0);
+  const [albumName, setAlbumName] = React.useState('');
+
 
   const validateInput = ({ target }) => {
     const { value } = target;
@@ -31,38 +33,32 @@ function Search() {
     if (album.length === 0) {
       setInvalid('Nenhum álbum foi encontrado')
     }
-    setResposta(`Resultado de álbuns de: ${valueChange}`);
+    setResposta(`Resultado de álbuns de: `);
 
     setAlbums(album);
     setValueChange('');
     setLoading(true);
+    setAlbumName(valueChange);
 
-    const setNumberPages = Math.ceil(album.length / 10);
-    setCountRenderPage(setNumberPages);
+
+  };
+
+  const handleAlbumClick = (collectionId) => {
+    history.push(`/album/${collectionId}`);
   };
 
 
   const handleClick = () => {
-    setIndexAlbun(indexAlbun + 10)
     setLimitAlbums(limitAlbums + 10)
   }
-
-  const clickPages = (index) => {
-    setLimitAlbums((index + 1) * 10)
-   if(index === 0){
-     setIndexAlbun(0)
-   }
-    setIndexAlbun(index * 10)
-  }
-
 
 
 
   return (
-    <section className="containerSearch">
+    <section className=" ">
       {
         loading ? (
-          <section className="continerSonds">
+          <section className="">
             <div className="relative">
               <button
                 onClick={findArtist}
@@ -83,46 +79,44 @@ function Search() {
 
             </div>
             {albums.length === 0
-              ? <p style={{ textAlign: 'center', marginTop: '40vh' }}>{invalid}</p>
-              : <p className="titleSearch">{resposta}</p>}
+              ? <p >{invalid}</p>
+              : <p className="text-white my-6">{resposta}<span className='text-green-500 '>{albumName}</span></p>}
             <div className="AllAlbuns">
-
-              {albums.slice(indexAlbun, limitAlbums).map((
-                { artistName,
-                  artworkUrl100,
-                  collectionName,
-                  collectionId },
-                index,
-              ) => (
-                <tr key={collectionId} className='group hover:bg-white/10 cursor-pointer'>
-                  <td className='py-4 text-gray-400'>{index + 1}</td>
-                  <td className="py-4">
-                    <div className="flex items-center gap-4">
-                      <img src={artworkUrl100} alt="" className="w-12 h-12 rounded" />
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {albums.slice(0, limitAlbums).map(
+                  ({ artistName, artworkUrl100, collectionName, collectionId }, index) => (
+                    <button
+                      key={collectionId}
+                      className="flex items-center gap-4 bg-white/5 p-3 rounded-lg hover:bg-white/10 cursor-pointer"
+                      onClick={() => handleAlbumClick(collectionId)}
+                    >
+                      <span className="text-gray-400">{index + 1}</span>
+                      <img
+                        src={artworkUrl100}
+                        alt={collectionName}
+                        className="w-12 h-12 rounded"
+                      />
                       <div>
                         <p className="text-white font-medium">{collectionName}</p>
                         <p className="text-sm text-gray-400">{artistName}</p>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-
-              ))}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
-            {Array.from({ length: countRenderPage }, (_, i) => (
-              <button
-                onClick={() => clickPages(i)}
-              >{i + 1}</button>
-            ))}
-            {albums.length > 0 && <div>
-              <button
+            {limitAlbums >= albums.length ? <div>
+
+            </div>
+              :
+              <div>          <button
                 type="button"
-                className=""
+                className="my-4 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                 onClick={handleClick}
               >
                 Carregar mais
-              </button>
-            </div>}
+              </button></div>
+            }
           </section>
         )
           : <Carregando />
