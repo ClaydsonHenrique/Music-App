@@ -5,13 +5,6 @@ const SUCCESS_STATUS = 'OK';
 const readUser = () => JSON.parse(localStorage.getItem(USER_KEY));
 const saveUser = (user) => localStorage.setItem(USER_KEY, JSON.stringify(user));
 
-// --------------------------------------------------------------------
-// A função simulateRequest simula uma requisição para uma API externa
-// Esse tipo de função que "chama outra função" é chamada de
-// "currying function" https://javascript.info/currying-partials
-// não se preocupe, estudaremos isso mais futuramente
-// --------------------------------------------------------------------
-
 const simulateRequest = (response) => (callback) => {
   setTimeout(() => {
     callback(response);
@@ -32,6 +25,17 @@ export const createUser = (user) => new Promise((resolve) => {
     email: '',
     image: '',
     description: '',
+    playlist: 0,
+    following: 0,
+    followers: 0,
+    subscription: false,
+    subscriptionType: '',
+    subscriptionDate: '',
+    subscriptionEndDate: '',
+    subscriptionStatus: '',
+    subscriptionPlan: '',
+    subscriptionPrice: '',
+    subscriptionCurrency: '',
   };
   saveUser({ ...emptyUser, ...user });
   simulateRequest(SUCCESS_STATUS)(resolve);
