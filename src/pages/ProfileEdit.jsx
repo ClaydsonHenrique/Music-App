@@ -1,150 +1,149 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { getUser, updateUser } from '../services/userAPI';
 import Carregando from '../components/Carregando';
+import { useHistory } from 'react-router-dom';
 
-class ProfileEdit extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      nome: '',
-      email: '',
-      image: '',
-      description: '',
-      disable: true,
-      loading: false,
-    };
-  }
+function ProfileEdit() {
 
-  componentDidMount() {
-    this.getusers();
-  }
+  const history = useHistory();
+  const [user, setUser] = React.useState({
+    nome: '',
+    email: '',
+    image: '',
+    description: '',
+  });
+  const [disable, setDisable] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
-  validateInputs = () => {
+
+  React.useEffect(() => {
+    getusers();
+  }, []);
+
+
+
+  const validateInputs = () => {
     const { nome,
       email,
       image,
-      description } = this.state;
+      description } = user
     const validate = (
       nome.length > 0
-        && email.length > 0
-        && image.length > 0
-        && description.length > 0);
+      && email.length > 0
+      && image.length > 0
+      && description.length > 0);
     if (validate) {
-      this.setState(
-        { disable: false },
-      );
+      setDisable(false);
     } else {
-      this.setState(
-        { disable: true },
-      );
+      setDisable(true);
     }
     return validate;
   };
 
-  onInputChange = ({ target }) => {
+  const onInputChange = ({ target }) => {
     const { name, value } = target;
-
-    this.setState({
+    setUser((prevState) => ({
+      ...prevState,
       [name]: value,
-    }, this.validateInputs);
+    }));
+    validateInputs();
   };
 
-  getusers = async () => {
-    this.setState({ loading: true });
+  const getusers = async () => {
+    setLoading(true);
     const result = await getUser();
     console.log(result);
     const { name, email, description, image } = result;
-    this.setState({ nome: name, email, description, image, loading: false });
+    setUser({
+      nome: name,
+      email,
+      description: description || '',
+      image: image || '',
+    });
+    setLoading(false)
   };
 
-  formSubmit = async () => {
+  const formSubmit = async () => {
     const {
       nome,
       email,
       image,
-      description } = this.state;
-    const { history } = this.props;
+      description } = user;
     await updateUser({ name: nome, email, image, description });
     history.push('/profile');
   };
 
-  render() {
-    const { nome,
-      email,
-      image,
-      description,
-      disable,
-      loading,
-    } = this.state;
-
-    return (
-      <div data-testid="page-profile-edit">
-        { loading && <Carregando />}
-        <h1>Editar perfil</h1>
-        <label>
-          name
-          <input
-            onChange={ this.onInputChange }
-            data-testid="edit-input-name"
-            type="text"
-            name="nome"
-            id="name"
-            value={ nome }
-          />
-        </label>
-        <label>
-          email
-          <input
-            onChange={ this.onInputChange }
-            data-testid="edit-input-email"
-            type="text"
-            name="email"
-            id="email"
-            value={ email }
-          />
-        </label>
-        <label>
-          Description
-          <input
-            onChange={ this.onInputChange }
-            data-testid="edit-input-description"
-            type="text"
-            name="description"
-            id="description"
-            value={ description }
-          />
-        </label>
-        <label>
-          image
-          <input
-            onChange={ this.onInputChange }
-            data-testid="edit-input-image"
-            type="text"
-            name="image"
-            id="image"
-            value={ image }
-          />
-        </label>
-        <button
-          data-testid="edit-button-save"
-          disabled={ disable }
-          onClick={ this.formSubmit }
-        >
-          Salvar
-
-        </button>
-
+  return (
+    <section>
+      <div className='text-white  p-4 shadow-lg mb-4'>
+        <h1>Edit Profile</h1>
+        <p>Update your profile information below.</p>
       </div>
+      <div className='bg-white/5 text-white shadow-lg rounded-lg p-4 flex gap-4  items-center'>
+        <div className="w-32 h-32 rounded-full overflow-hidden mb-4 border border-gray-300 shadow-lg bg-green-500 flex justify-center items-center ">
+          <img
+            className="w-full h-full object-cover"
+            src="" alt="" />
+        </div>
+        <div>
+          <h3>Profile Photo</h3>
+          <p>Upload a new profile photo</p>
+          <button>Upload Photo</button>
+          <button>Remove</button>
+        </div>
+      </div>
+      <div className="mt-3 bg-white/5 p-4 shadow-lg rounded-lg text-white ">
+        <h3>Edit Profile</h3>
+        {loading ? <Carregando /> : (
+          <form onSubmit={formSubmit} className='flex flex-col gap-4'>
+            <label htmlFor="nome" className="block mb-2 flex gap-4">
+              nome:
+              <input
+              className='w-full border border-gray-300 rounded-lg p-2 bg-white text-black'
+                id='nome'
+                type="text"
+                name="nome"
+                value={user.nome}
+                onChange={onInputChange}
+                placeholder="Name"
+              />
+            </label>
+            <label htmlFor="email" className="block mb-2 flex gap-4">
+              Email:
+              <input
+              className='w-full border border-gray-300 rounded-lg p-2 bg-white text-black '
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={onInputChange}
+                placeholder="Email"
+              />
+            </label>
+            <label htmlFor="description" className="block mb-2 flex gap-4 ">
+              bio:
+              <textarea
+              className='resize-none w-full h-32 border border-gray-300 rounded-lg p-2 bg-white text-black '
+                id='description'
+                name="description"
+                value={user.description}
+                onChange={onInputChange}
+                placeholder="Description"
+              />
+            </label>
+            
+            <div>
+              <button
+                className='cursor-pointer bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+                type="submit" disabled={disable}>Save Changes</button>
 
-    );
-  }
+              <button>cancelar</button>
+            </div>
+          </form>
+        )}
+      </div>
+    </section>
+
+  );
 }
 
 export default ProfileEdit;
-
-ProfileEdit.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};

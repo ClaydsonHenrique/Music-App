@@ -7,6 +7,9 @@ function Profile() {
   const [usuarios, setUsuarios] = React.useState([]);
   const [active, setActive] = React.useState(false);
   const [valid, setValid] = React.useState('');
+  const [conta, setconta] = React.useState({ name: '', email: '', subscription: '', });
+  const [subscription, setSubscription] = React.useState({ plan: '', price: '', status: '', });
+  const [privacidade, setPrivacidade] = React.useState({ data: '', notifications: '', });
 
 
 
@@ -23,6 +26,29 @@ function Profile() {
   React.useEffect(() => {
     PegandoDados();
   }, []);
+
+
+  const dadosConta = () => {
+    setconta({
+      name: usuarios.name,
+      email: usuarios.email || 'email não cadastrado',
+      subscription: usuarios.subscription ? 'Ativo' : 'Inativo',
+    });
+    setSubscription({
+      plan: usuarios.subscriptionPlan || 'Simples',
+      price: usuarios.subscriptionPrice ? `${usuarios.subscriptionPrice} ${usuarios.subscriptionCurrency}` :
+      'R$ 0,00' ,
+      status: usuarios.subscriptionStatus || 'Nenhum plano ativo ',
+    });
+    setPrivacidade({
+      data: 'Dados pessoais',
+      notifications: 'Notificações',
+    });
+  }
+
+  React.useEffect(() => {
+    dadosConta();
+  }, [usuarios]);
 
   console.log(usuarios);
 
@@ -78,23 +104,47 @@ function Profile() {
             <p className="text-1xl">v</p>
           </div>
 
-          <div
-            className={`overflow-hidden transition-all duration-500 ${active && valid === 'configuracoes' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-              }`}
-          >
-            <div className="p-2 flex flex-col gap-3">
-              <p className='border border-gray-300 rounded-lg p-3 bg-black '>acesso a configuração</p>
-              <p className='border border-gray-300 rounded-lg p-3 bg-black'>acesso a configuração</p>
-              <p className='border border-gray-300 rounded-lg p-3 bg-black'>acesso a configuração</p>
-              <p className='border border-gray-300 rounded-lg p-3 bg-black'>acesso a configuração</p>
-            </div>
+
+        </div>
+        <div
+          className={` text-white bg-white/5  overflow-hidden transition-all duration-500 ${active && valid === 'configuracoes' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+        >
+          <div className="p-2 flex flex-col gap-3">
+            <p className='border border-gray-300 rounded-lg p-3  '>{conta.name}</p>
+            <p className='border border-gray-300 rounded-lg p-3 '>{conta.email}</p>
+            <p className='border border-gray-300 rounded-lg p-3 '>{conta.subscription}</p>
           </div>
         </div>
 
+        <div
+          onClick={() => handleclick('plano')}
+          className="cursor-pointer flex flex-col p-4 bg-white/5 text-white border border-gray-300 shadow-lg rounded-lg mt-4  hover:bg-gray-900 transition-colors duration-300">
+          <div
+
+            className="flex justify-between items-center cursor-pointer p-2 transition-colors duration-300"
+          >
+            <p>plano</p>
+            <p className="text-1xl">v</p>
+          </div>
+
+         
+        </div>
+        
+        <div
+          className={`text-white bg-white/5 overflow-hidden transition-all duration-500 ${active && valid === 'plano' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+        >
+          <div className="p-2 flex flex-col gap-3">
+            <p className='border border-gray-300 rounded-lg p-3  '>{subscription.plan}</p>
+            <p className='border border-gray-300 rounded-lg p-3 '>{subscription.price}</p>
+            <p className='border border-gray-300 rounded-lg p-3 '>{subscription.status}</p>
+          </div>
+        </div>
 
         <div
           onClick={() => handleclick('privacidade')}
-          className="cursor-pointer flex flex-col p-4 bg-zinc-900 text-white border border-gray-300 shadow-lg rounded-lg mt-4 hover:bg-gray-900 transition-colors duration-300">
+          className="text-white bg-white/5  cursor-pointer flex flex-col p-4 text-white border border-gray-300 shadow-lg rounded-lg mt-4 hover:bg-gray-900 transition-colors duration-300">
           <div
             className="flex justify-between items-center cursor-pointer p-2 "
           >
@@ -102,18 +152,18 @@ function Profile() {
             <p className="text-1xl">v</p>
           </div>
 
-          <div
-            className={`overflow-hidden transition-all duration-500 ${active && valid === 'privacidade' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-              }`}
-          >
-            <div className="p-2  flex flex-col gap-2">
-              <p className='border border-gray-300 p-3'>dados pessoais</p>
-              <p className='border border-gray-300 p-3'>notificação</p>
-            </div>
-          </div>
+
         </div>
 
-
+        <div
+          className={`text-white bg-white/5 overflow-hidden transition-all duration-500 ${active && valid === 'privacidade' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            }`}
+        >
+          <div className="p-2  flex flex-col gap-2">
+            <p className='border border-gray-300 p-3'>dados pessoais</p>
+            <p className='border border-gray-300 p-3'>notificação</p>
+          </div>
+        </div>
       </div>
     </section>
   );
