@@ -19,7 +19,7 @@ export default function Sidebar() {
   
   return (
     <div className="w-64 bg-black p-6">
-      <Link to="/">
+      <Link to="/search">
         <div className="flex items-center gap-2 mb-8">
           <Music className="h-8 w-8 text-white" />
           <span className="text-white text-xl font-bold">Musicfy</span>

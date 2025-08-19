@@ -1,54 +1,54 @@
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
+import MusicContext from '../context/MusicContext';
 
-class Favorites extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: false,
-      favoriteTrackIDs: [],
-    };
-  }
-
-  async componentDidMount() {
+function Favorites () {
+  const { music, setMusic } = React.useContext(MusicContext);
+  const [ favoriteTrackIDs, setFavoriteTrackIDs ] = React.useState([]);
+  const [ loading, setLoading ] = React.useState(false);
+  
+  const getFavorites = async () => {
+    setLoading(true);
     const favoriteList = await getFavoriteSongs();
     const listIds = favoriteList.map((item) => item);
-    this.setState({ favoriteTrackIDs: listIds });
-  }
+    setFavoriteTrackIDs(listIds);
+    setLoading(false);
+  };
+  
+  
+  React.useEffect(() => {
+    getFavorites();
+  }, []);
+  
+  
 
-  async savefavorite(song) {
+  const savefavorite = async (song) => {
     await removeSong(song);
     const favoriteList = await getFavoriteSongs();
     const listIds = favoriteList.map((item) => item);
-    this.setState({ favoriteTrackIDs: listIds });
+    setFavoriteTrackIDs(listIds);
   }
-
-  render() {
-    const { favoriteTrackIDs, loading } = this.state;
-    console.log(favoriteTrackIDs);
+  
+  console.log(favoriteTrackIDs);
+  
     return (
-      <main className="containerAlbum " style={ { height: '100vh' } }>
-        <div className="imgBg">
+      <main className=" " >
+        <div className="text-white text-center p-4">
           <h1>Musicas favoritas</h1>
         </div>
-        <div className="page-album" style={ { marginTop: '16rem' } }>
+        <div className="page-album" >
           {loading ? '/>' : (
             <div>
               {favoriteTrackIDs.map(({ trackName, previewUrl, trackId }, index) => (
-                <section key={ index } className="muscis">
-                  <p className="trackname">
+                <section key={index} className="flex items-center gap-4 bg-white/5 p-3 rounded-lg hover:bg-white/10 cursor-pointer"
+                  onClick={() => setMusic(favoriteTrackIDs[index])}
+                >
+                  <p className=" text-gray-400">
                     {' '}
                     {trackName}
                     {' '}
                   </p>
-                  <audio data-testid="audio-component" src={ previewUrl } controls>
-                    <track kind="captions" />
-                    O seu navegador não suporta o elemento
-                    {' '}
-                    <code>audio</code>
-                    .
-                  </audio>
                   <label>
                     <FaHeart
                       style={ {
@@ -62,7 +62,7 @@ class Favorites extends React.Component {
                       data-testid={ `checkbox-music-${trackId}` }
                       type="checkbox"
                       style={ { display: 'none' } }
-                      onChange={ () => this.savefavorite(favoriteTrackIDs[index]) }
+                      onChange={ () => savefavorite(favoriteTrackIDs[index]) }
                     />
                   </label>
                 </section>
@@ -75,6 +75,5 @@ class Favorites extends React.Component {
 
     );
   }
-}
 
 export default Favorites;

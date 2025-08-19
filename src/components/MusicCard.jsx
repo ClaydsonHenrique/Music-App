@@ -13,12 +13,6 @@ function MusicCard({ album }) {
 
   const { music, setMusic } = React.useContext(MusicContext);
 
-  const addFavorite = async () => {
-    const favoriteList = await getFavoriteSongs();
-    console.log('Favorite List:', favoriteList);
-    const listIds = favoriteList.map((item) => item.trackId);
-    setFavoriteTrackIDs(listIds);
-  }
 
   const savefavorite = async (song) => {
     if (favoriteTrackIDs.includes(song.trackId)) {
@@ -34,11 +28,18 @@ function MusicCard({ album }) {
     setFavoriteTrackIDs(favoriteTrackIDs);
 
   }
+  
+    const addFavorite = async () => {
+    const favoriteList = await getFavoriteSongs();
+    const listIds = favoriteList.map((item) => item.trackId);
+    setFavoriteTrackIDs(listIds);
+  }
 
 
-
-  console.log(music)
-
+    React.useEffect(() => {
+    addFavorite();
+  }, []);
+  
   return (
     <div>
       {loading ? <Carregando /> : (
@@ -46,18 +47,18 @@ function MusicCard({ album }) {
           {album.map(({ trackName, previewUrl, trackId }, index) => {
             if (!previewUrl) return null;
             return (
-              <section key={index} className="muscis flex items-center gap-4 bg-white/5 p-3 rounded-lg hover:bg-white/10 cursor-pointer"
+              <section key={index} className="flex items-center gap-4 bg-white/5 p-3 rounded-lg hover:bg-white/10 cursor-pointer"
                 onClick={() => setMusic(album[index])}
               >
 
-                <p className="trackname text-gray-400 ">
+                <p className=" text-gray-400 ">
                   {' '}
                   {trackName}
                   {' '}
                 </p>
                 <label>
-                  {/* {this.isMusicFavorite(album[index])} */}
                   <FaHeart
+                  onClick={() => savefavorite(album[index])}
                     style={{
                       color: `${favoriteTrackIDs.includes(trackId)
                         ? 'red' : 'grey'}`
